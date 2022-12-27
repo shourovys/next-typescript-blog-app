@@ -4,4 +4,5 @@ import API from "./axios";
 export const getAllCategoriesApi = async () => API.get("/categories");
 
 // Articles
-export const getAllArticles = async () => API.get("/articles?populate=*");
+export const getAllArticles = async (queryString: string) =>
+  API.get(`/articles?${queryString}`);

@@ -34,9 +34,15 @@ export interface IAuthorAttribute {
   provider: string;
   firstName: string; // net to change in content type
   lastName: string;
-  formats: {
-    thumbnail: {
-      url: string;
+  avatar: {
+    data: {
+      attributes: {
+        formats: {
+          thumbnail: {
+            url: string;
+          };
+        };
+      };
     };
   };
 }

@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
+import qs from "qs";
 import { getAllArticles, getAllCategoriesApi } from "../api";
 import ArticleList from "../components/common/ArticleList";
 import Tabs from "../components/common/Tabs";
@@ -10,7 +11,6 @@ import {
   ICollectionResponse,
   IPagination,
 } from "../types";
-
 interface IHomeProps {
   categories: {
     items: ICategory[];
@@ -40,8 +40,13 @@ export const getServerSideProps: GetServerSideProps = async () => {
     await getAllCategoriesApi();
 
   //get all articles
+  const options = {
+    populate: ["author.avatar"],
+    sort: ["id:desc"],
+  };
+  const queryString = qs.stringify(options);
   const { data: articles }: AxiosResponse<ICollectionResponse<IArticles>> =
-    await getAllArticles();
+    await getAllArticles(queryString);
   return {
     props: {
       categories: {
