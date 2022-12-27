@@ -11,6 +11,7 @@ import {
   ICollectionResponse,
   IPagination,
 } from "../../types";
+import { capitalizeFirstLetter, removeHyphen } from "../../utils/categoryMaker";
 
 interface ICategoryBlogsProps {
   categories: {
@@ -20,12 +21,20 @@ interface ICategoryBlogsProps {
     items: IArticles[];
     pagination: IPagination;
   };
+  categorySlug: string;
 }
-const CategoryBlogs = ({ categories, articles }: ICategoryBlogsProps) => {
+const CategoryBlogs = ({
+  categories,
+  articles,
+  categorySlug,
+}: ICategoryBlogsProps) => {
+  const formattedCategorySlug = (): string => {
+    return capitalizeFirstLetter(removeHyphen(categorySlug));
+  };
   return (
     <div>
       <Head>
-        <title>Coders blogs</title>
+        <title>Coders blogs: {formattedCategorySlug()}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Tabs categories={categories.items} handleOnSearch={() => {}} />
@@ -61,6 +70,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         items: articles.data,
         pagination: articles.meta.pagination,
       },
+      categorySlug: query.categorySlug,
     },
   };
 };
