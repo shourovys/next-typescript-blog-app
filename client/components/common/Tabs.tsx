@@ -10,7 +10,7 @@ const Tabs = ({ categories, handleOnSearch }: IPropType) => {
   const router = useRouter();
 
   const isActiveLink = (category: ICategory) => {
-    return category.attributes.slug === router.query.category;
+    return category.attributes.slug === router.query.categorySlug;
   };
 
   return (

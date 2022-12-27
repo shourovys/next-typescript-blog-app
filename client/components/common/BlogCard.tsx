@@ -15,17 +15,14 @@ const BlogCard = ({ article }: IPropType) => {
         </h1>
       </Link>
       <div className="flex items-center my-4 space-x-2">
-        {article.attributes.author.data.attributes.avatar.data.attributes
-          .formats?.thumbnail?.url && (
-          <div className="flex items-center justify-center overflow-hidden rounded-lg">
-            <Image
-              src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${article.attributes.author.data.attributes.avatar.data.attributes.formats.thumbnail.url}`}
-              alt=""
-              height={40}
-              width={40}
-            />
-          </div>
-        )}
+        <div className="flex items-center justify-center overflow-hidden rounded-full">
+          <Image
+            src={`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${article.attributes.author.data.attributes.avatar.data.attributes.formats.thumbnail.url}`}
+            alt=""
+            height={35}
+            width={35}
+          />
+        </div>
         <span className="text-sm font-bold text-gray-600">
           {article.attributes.author.data.attributes.firstName}{" "}
           {article.attributes.author.data.attributes.lastName} on &nbsp;
