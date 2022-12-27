@@ -2,7 +2,8 @@ import { AxiosResponse } from "axios";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { getAllArticles, getAllCategoriesApi } from "../api";
-import Tabs from "../components/home/Tabs";
+import ArticleList from "../components/common/ArticleList";
+import Tabs from "../components/common/Tabs";
 import {
   IArticles,
   ICategory,
@@ -20,7 +21,7 @@ interface IHomeProps {
   };
 }
 
-export default function Home({ categories }: IHomeProps) {
+export default function Home({ categories, articles }: IHomeProps) {
   return (
     <div>
       <Head>
@@ -28,6 +29,7 @@ export default function Home({ categories }: IHomeProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Tabs categories={categories.items} handleOnSearch={() => {}} />
+      <ArticleList articles={articles.items} />
     </div>
   );
 }

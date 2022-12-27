@@ -59,7 +59,7 @@ export interface IArticlesAttribute {
   title: string;
   slug: string;
   shortDescription: string;
-  publishedAt: string;
+  createdAt: string;
   body: string;
   image: IBlogImage;
   category: {
