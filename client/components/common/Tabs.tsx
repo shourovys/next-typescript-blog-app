@@ -1,5 +1,6 @@
 import Link from "next/link";
 // import _ from "lodash";
+import { debounce } from "lodash";
 import { useRouter } from "next/router";
 import { ICategory } from "../../types";
 
@@ -14,7 +15,7 @@ const Tabs = ({ categories }: IPropType) => {
     return category.attributes.slug === router.query.slug;
   };
 
-  const handleOnSearch = (searchQuery: string): void => {
+  const handleOnSearch = debounce((searchQuery: string): void => {
     const queryObject = router.query;
     delete queryObject.slug;
     delete queryObject.search;
@@ -27,7 +28,7 @@ const Tabs = ({ categories }: IPropType) => {
         ...(searchQuery && { search: searchQuery }),
       },
     });
-  };
+  }, 500);
 
   return (
     <div className="flex items-center justify-between my-8 border-b-2 border-gray-100">
