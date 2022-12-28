@@ -4,6 +4,7 @@ import Head from "next/head";
 import qs from "qs";
 import { getAllArticles, getAllCategoriesApi } from "../../api";
 import ArticleList from "../../components/common/ArticleList";
+import Pagination from "../../components/common/Pagination";
 import Tabs from "../../components/common/Tabs";
 import {
   IArticles,
@@ -39,6 +40,11 @@ const CategoryBlogs = ({
       </Head>
       <Tabs categories={categories.items} handleOnSearch={() => {}} />
       <ArticleList articles={articles.items} />
+      <Pagination
+        page={articles.pagination.page}
+        pageCount={articles.pagination.pageCount}
+        currentPath={"/category/" + categorySlug}
+      />
     </div>
   );
 };
@@ -47,6 +53,10 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   // get categories
   const { data: categories }: AxiosResponse<ICollectionResponse<ICategory[]>> =
     await getAllCategoriesApi();
+  console.log(
+    "🚀 ~ file: [slug].tsx:68 ~ constgetServerSideProps:GetServerSideProps= ~  query.page && typeof +query.page ===",
+    query.page && typeof +query.page === "number" ? +query.page : 1
+  );
 
   //get all articles
   const options = {
@@ -54,8 +64,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     sort: ["id:desc"],
     filters: {
       category: {
-        slug: query.categorySlug,
+        slug: query.slug,
       },
+    },
+    pagination: {
+      page: query.page && !isNaN(+query.page) ? +query.page : 1,
+      pageSize: 2,
     },
   };
   const queryString = qs.stringify(options);
@@ -70,7 +84,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         items: articles.data,
         pagination: articles.meta.pagination,
       },
-      categorySlug: query.categorySlug,
+      categorySlug: query.slug,
     },
   };
 };

@@ -4,6 +4,7 @@ import Head from "next/head";
 import qs from "qs";
 import { getAllArticles, getAllCategoriesApi } from "../api";
 import ArticleList from "../components/common/ArticleList";
+import Pagination from "../components/common/Pagination";
 import Tabs from "../components/common/Tabs";
 import {
   IArticles,
@@ -30,11 +31,15 @@ export default function Home({ categories, articles }: IHomeProps) {
       </Head>
       <Tabs categories={categories.items} handleOnSearch={() => {}} />
       <ArticleList articles={articles.items} />
+      <Pagination
+        page={articles.pagination.page}
+        pageCount={articles.pagination.pageCount}
+      />
     </div>
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   // get categories
   const { data: categories }: AxiosResponse<ICollectionResponse<ICategory[]>> =
     await getAllCategoriesApi();
@@ -43,10 +48,15 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const options = {
     populate: ["author.avatar"],
     sort: ["id:desc"],
+    pagination: {
+      page: query.page && !isNaN(+query.page) ? +query.page : 1,
+      pageSize: 2,
+    },
   };
   const queryString = qs.stringify(options);
   const { data: articles }: AxiosResponse<ICollectionResponse<IArticles>> =
     await getAllArticles(queryString);
+
   return {
     props: {
       categories: {
