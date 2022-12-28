@@ -24,9 +24,13 @@ const Pagination = ({ page = 1, pageCount, currentPath = "/" }: IProps) => {
       return;
     }
 
+    const queryObject = router.query;
+    delete queryObject.page;
+    delete queryObject.slug;
+
     router.push({
       pathname: currentPath,
-      query: { page: page + direction },
+      query: { page: page + direction, ...queryObject },
     });
   };
 

@@ -29,7 +29,7 @@ export default function Home({ categories, articles }: IHomeProps) {
         <title>Coders blogs</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Tabs categories={categories.items} handleOnSearch={() => {}} />
+      <Tabs categories={categories.items} />
       <ArticleList articles={articles.items} />
       <Pagination
         page={articles.pagination.page}
@@ -48,6 +48,13 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const options = {
     populate: ["author.avatar"],
     sort: ["id:desc"],
+    ...(query.search && {
+      filters: {
+        title: {
+          $containsi: query.search,
+        },
+      },
+    }),
     pagination: {
       page: query.page && !isNaN(+query.page) ? +query.page : 1,
       pageSize: 2,

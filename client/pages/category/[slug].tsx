@@ -53,10 +53,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   // get categories
   const { data: categories }: AxiosResponse<ICollectionResponse<ICategory[]>> =
     await getAllCategoriesApi();
-  console.log(
-    "🚀 ~ file: [slug].tsx:68 ~ constgetServerSideProps:GetServerSideProps= ~  query.page && typeof +query.page ===",
-    query.page && typeof +query.page === "number" ? +query.page : 1
-  );
 
   //get all articles
   const options = {

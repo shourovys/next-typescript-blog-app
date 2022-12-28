@@ -1,16 +1,32 @@
 import Link from "next/link";
+// import _ from "lodash";
 import { useRouter } from "next/router";
 import { ICategory } from "../../types";
 
 interface IPropType {
   categories: ICategory[];
-  handleOnSearch: (query: string) => void;
+  // handleOnSearch: (query: string) => void;
 }
-const Tabs = ({ categories, handleOnSearch }: IPropType) => {
+const Tabs = ({ categories }: IPropType) => {
   const router = useRouter();
 
   const isActiveLink = (category: ICategory) => {
     return category.attributes.slug === router.query.slug;
+  };
+
+  const handleOnSearch = (searchQuery: string): void => {
+    const queryObject = router.query;
+    delete queryObject.slug;
+    delete queryObject.search;
+    delete queryObject.page;
+
+    router.push({
+      pathname: "/",
+      query: {
+        ...queryObject,
+        ...(searchQuery && { search: searchQuery }),
+      },
+    });
   };
 
   return (
